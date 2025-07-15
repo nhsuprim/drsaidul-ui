@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 type Question = {
     question: string;
@@ -11,7 +13,6 @@ type Question = {
 type FormData = {
     name: string;
     description: string;
-
     questions: Question[];
 };
 
@@ -22,6 +23,8 @@ export default function ServiceForm() {
         description: "",
         questions: [],
     });
+
+    const router = useRouter();
 
     const addQuestion = () => {
         setFormData((prev) => ({
@@ -39,27 +42,34 @@ export default function ServiceForm() {
 
     const handleQuestionChange = (
         index: number,
-        field: keyof Question,
-        value: string | Question["answerType"]
+        field: "question" | "answerType",
+        value: string
     ) => {
-        const updatedQuestions = [...formData.questions];
-        const question = updatedQuestions[index];
+        setFormData((prev) => {
+            const updated = [...prev.questions];
+            const q = { ...updated[index] };
 
-        if (field === "answerType") {
-            question[field] = value as Question["answerType"];
-            // Reset options if changing to TEXT
-            if (value === "TEXT") question.options = [];
-        } else {
-            question[field] = value as string;
-        }
+            if (field === "answerType") {
+                q.answerType = value as Question["answerType"];
+                if (value === "TEXT") q.options = [];
+            } else {
+                q.question = value;
+            }
 
-        setFormData((prev) => ({ ...prev, questions: updatedQuestions }));
+            updated[index] = q;
+            return { ...prev, questions: updated };
+        });
     };
 
     const addOption = (questionIndex: number) => {
-        const updatedQuestions = [...formData.questions];
-        updatedQuestions[questionIndex].options.push("");
-        setFormData((prev) => ({ ...prev, questions: updatedQuestions }));
+        setFormData((prev) => {
+            const updated = [...prev.questions];
+            updated[questionIndex] = {
+                ...updated[questionIndex],
+                options: [...updated[questionIndex].options, ""],
+            };
+            return { ...prev, questions: updated };
+        });
     };
 
     const handleOptionChange = (
@@ -67,9 +77,13 @@ export default function ServiceForm() {
         optionIndex: number,
         value: string
     ) => {
-        const updatedQuestions = [...formData.questions];
-        updatedQuestions[questionIndex].options[optionIndex] = value;
-        setFormData((prev) => ({ ...prev, questions: updatedQuestions }));
+        setFormData((prev) => {
+            const updated = [...prev.questions];
+            const q = { ...updated[questionIndex] };
+            q.options[optionIndex] = value;
+            updated[questionIndex] = q;
+            return { ...prev, questions: updated };
+        });
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,16 +95,12 @@ export default function ServiceForm() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(formData);
-        console.log(files);
 
         const form = new FormData();
-        form.append("data", JSON.stringify(formData)); // ✅ Correct structure
-        files.forEach((file) => {
-            form.append("file", file);
-        });
-        const token = localStorage.getItem("accessToken");
+        form.append("data", JSON.stringify(formData));
+        files.forEach((file) => form.append("file", file));
 
+        const token = localStorage.getItem("accessToken");
         const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
         try {
@@ -100,15 +110,16 @@ export default function ServiceForm() {
                     Authorization: `${token}`,
                 },
             });
-            console.log(response.data);
 
             if (response.data.success) {
-                alert("Service created successfully!");
+                toast.success("Service successfully created");
+                router.push("/dashboard/services");
                 setFormData({
                     name: "",
                     description: "",
                     questions: [],
                 });
+                setFiles([]);
             } else {
                 throw new Error("Failed to create service");
             }
@@ -125,7 +136,7 @@ export default function ServiceForm() {
             </h1>
 
             <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Service Information */}
+                {/* Service Info */}
                 <div className="space-y-4 border-b border-gray-200 pb-6">
                     <h2 className="text-lg font-semibold text-gray-700 mb-4">
                         Service Information
@@ -174,6 +185,7 @@ export default function ServiceForm() {
                         <input
                             type="file"
                             multiple
+                            required
                             onChange={handleFileChange}
                             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />

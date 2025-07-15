@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 interface Option {
     id: string;
@@ -40,13 +41,19 @@ const Page = ({ params }: { params: { id: string } }) => {
     const [files, setFiles] = useState<File[]>([]);
     const [showUserInfo, setShowUserInfo] = useState(false);
 
+    const router = useRouter();
+
     useEffect(() => {
         const getData = async () => {
             const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
             try {
-                const response = await fetch(`${baseURL}/services${params.id}`);
+                const response = await fetch(
+                    `${baseURL}/services/${params.id}`
+                );
+
                 const json = await response.json();
+
                 setService(json.data);
             } catch (error) {
                 console.error("Error fetching service:", error);
@@ -158,6 +165,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                 console.log("Appointment created successfully", response.data);
                 // You might want to add a success notification or redirect here
                 toast.success("Appointment successfully created");
+                router.push("/");
             }
         } catch (error) {
             console.error("Submission error:", error);
