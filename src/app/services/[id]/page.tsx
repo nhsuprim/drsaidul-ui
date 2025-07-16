@@ -256,7 +256,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                                         {question.answerType === "TEXT" && (
                                             <input
                                                 type="text"
-                                                placeholder="Type your answer here..."
+                                                placeholder="এখানে লিখুন..."
                                                 className="w-full px-6 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
                                                 onChange={(e) =>
                                                     handleTextChange(
@@ -284,7 +284,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                                                 }
                                             >
                                                 <option value="">
-                                                    Choose an option
+                                                    একটি অপশন বাছাই করুন
                                                 </option>
                                                 {question.option?.map(
                                                     (option) => (

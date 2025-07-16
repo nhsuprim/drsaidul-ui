@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "DR Saidul Islam",
+    title: "ডাঃ সাইদুল ইসলাম",
     description: "",
 };
 
