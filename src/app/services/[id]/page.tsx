@@ -46,20 +46,16 @@ const Page = ({ params }: { params: { id: string } }) => {
     useEffect(() => {
         const getData = async () => {
             const baseURL = process.env.NEXT_PUBLIC_API_URL;
-
             try {
                 const response = await fetch(
                     `${baseURL}/services/${params.id}`
                 );
-
                 const json = await response.json();
-
                 setService(json.data);
             } catch (error) {
                 console.error("Error fetching service:", error);
             }
         };
-
         getData();
     }, [params.id]);
 
@@ -104,6 +100,22 @@ const Page = ({ params }: { params: { id: string } }) => {
     };
 
     const handleSubmit = async () => {
+        // Validate user fields
+        if (!name.trim() || !email.trim() || !phone.trim()) {
+            toast.error("আপনার নাম, ই-মেইল ও ফোন নম্বর আবশ্যক!");
+            return;
+        }
+
+        // Validate all questions
+        const unansweredQuestions = service?.questions.filter(
+            (q) => !answers[q.id] || !answers[q.id].answer
+        );
+
+        if (unansweredQuestions && unansweredQuestions.length > 0) {
+            toast.error("অনুগ্রহ করে সব প্রশ্নের উত্তর দিন!");
+            return;
+        }
+
         const formattedQuestions = Object.values(answers).map((answerObj) => {
             const question = service?.questions.find(
                 (q) => q.question === answerObj.questionText
@@ -148,6 +160,7 @@ const Page = ({ params }: { params: { id: string } }) => {
         files.forEach((file) => {
             formData.append("files", file);
         });
+
         const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
         try {
@@ -162,14 +175,14 @@ const Page = ({ params }: { params: { id: string } }) => {
             );
 
             if (response.data.success) {
-                console.log("Appointment created successfully", response.data);
-                // You might want to add a success notification or redirect here
-                toast.success("Appointment successfully created");
+                toast.success("অ্যাপয়েন্টমেন্ট সফলভাবে নেওয়া হয়েছে!");
                 router.push("/");
             }
         } catch (error) {
             console.error("Submission error:", error);
-            // You might want to add an error notification here
+            toast.error(
+                "সাবমিশনে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।"
+            );
         }
     };
 
@@ -227,6 +240,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                                                         >
                                                             <input
                                                                 type="checkbox"
+                                                                required
                                                                 className="h-5 w-5 text-blue-600 rounded focus:ring-blue-500"
                                                                 checked={
                                                                     answers[
@@ -257,6 +271,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                                             <input
                                                 type="text"
                                                 placeholder="এখানে লিখুন..."
+                                                required
                                                 className="w-full px-6 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
                                                 onChange={(e) =>
                                                     handleTextChange(
