@@ -219,7 +219,7 @@ const NavBar = () => {
                             {/* Conditionally render the Dashboard link if the user is an admin */}
                             {admin && (
                                 <Link
-                                    href="/dashboard"
+                                    href="/admin/dashboard"
                                     className={`relative text-gray-800 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-300 hover:text-blue-400 ${
                                         pathname === "/dashboard"
                                             ? "text-blue-500"
