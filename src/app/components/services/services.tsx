@@ -20,7 +20,8 @@ const Services = async () => {
         }
 
         const response = await res.json();
-        const services = response.data; // Adjust this based on your actual API response structure
+        const services = response.data;
+        // console.log(services);
 
         return (
             <div className="w-full container mx-auto mt-14">
@@ -37,7 +38,7 @@ const Services = async () => {
                             <div className="text-center">
                                 <div className="flex justify-center items-center">
                                     <Image
-                                        src={service.image}
+                                        src={service.image || ""}
                                         alt={service.name}
                                         width={300}
                                         height={300}

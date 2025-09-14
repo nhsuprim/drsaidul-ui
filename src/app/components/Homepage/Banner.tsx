@@ -99,7 +99,6 @@ import { HiOutlineBuildingLibrary } from "react-icons/hi2";
 const Banner = () => {
     return (
         <div className="min-h-screen bg-gradient-to-br from-[#f7fafc] via-[#f0fdfa] to-[#e0f2fe] relative overflow-hidden">
-            {/* Decorative Elements */}
             <div className="absolute top-0 left-0 w-full h-full opacity-20">
                 <div className="absolute top-1/3 right-0 w-64 h-64 bg-[#99f6e4] rounded-full mix-blend-multiply blur-3xl opacity-20"></div>
                 <div className="absolute bottom-0 left-0 w-72 h-72 bg-[#bae6fd] rounded-full mix-blend-multiply blur-3xl opacity-20"></div>
@@ -127,7 +126,7 @@ const Banner = () => {
                             <h1 className="text-4xl lg:text-5xl font-bold text-[#0f172a] mb-4">
                                 ডা. সাইদুল ইসলাম
                                 <span className="block mt-2 text-2xl lg:text-3xl font-semibold text-cyan-600">
-                                    হোমিওপ্যাথি বিশেষজ্ঞ
+                                    হোমিওপ্যাথি কনসালটেন্ট
                                 </span>
                             </h1>
 
@@ -143,7 +142,7 @@ const Banner = () => {
                                     গভঃ রেজিঃ নং-৩২০৫৬
                                 </p>
                                 <p className="text-sm text-slate-500">
-                                    ১৫+ বছর অভিজ্ঞতা | ১০,০০০+ সফল কেস
+                                    ১0+ বছর অভিজ্ঞতা | ১০,০০০+ সফল কেস
                                 </p>
                             </div>
                         </div>

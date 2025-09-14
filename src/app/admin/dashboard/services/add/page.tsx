@@ -10,17 +10,21 @@ type Question = {
     options: string[];
 };
 
-type FormData = {
+type FormDataType = {
     name: string;
     description: string;
+    amount: string;
+    amountMonthly: string; // keep as string for controlled input
     questions: Question[];
 };
 
 export default function ServiceForm() {
     const [files, setFiles] = useState<File[]>([]);
-    const [formData, setFormData] = useState<FormData>({
+    const [formData, setFormData] = useState<FormDataType>({
         name: "",
         description: "",
+        amount: "",
+        amountMonthly: "",
         questions: [],
     });
 
@@ -97,7 +101,13 @@ export default function ServiceForm() {
         e.preventDefault();
 
         const form = new FormData();
-        form.append("data", JSON.stringify(formData));
+        form.append(
+            "data",
+            JSON.stringify({
+                ...formData,
+            })
+        );
+        // console.log(formData);
         files.forEach((file) => form.append("file", file));
 
         const token = localStorage.getItem("accessToken");
@@ -113,10 +123,13 @@ export default function ServiceForm() {
 
             if (response.data.success) {
                 toast.success("Service successfully created");
+                console.log("Service created:", response.data);
                 router.push("/dashboard/services");
                 setFormData({
                     name: "",
                     description: "",
+                    amount: "",
+                    amountMonthly: "",
                     questions: [],
                 });
                 setFiles([]);
@@ -162,6 +175,41 @@ export default function ServiceForm() {
 
                     <div>
                         <label className="block text-sm font-medium text-gray-600 mb-1">
+                            Service Amount
+                        </label>
+                        <input
+                            type="text"
+                            required
+                            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+                            value={formData.amount}
+                            onChange={(e) =>
+                                setFormData({
+                                    ...formData,
+                                    amount: e.target.value, // keep as string
+                                })
+                            }
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-600 mb-1">
+                            Service Amount for 3 Months
+                        </label>
+                        <input
+                            type="text"
+                            required
+                            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+                            value={formData.amountMonthly}
+                            onChange={(e) =>
+                                setFormData({
+                                    ...formData,
+                                    amountMonthly: e.target.value, // keep as string
+                                })
+                            }
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-600 mb-1">
                             Description
                         </label>
                         <textarea
@@ -185,7 +233,6 @@ export default function ServiceForm() {
                         <input
                             type="file"
                             multiple
-                            required
                             onChange={handleFileChange}
                             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
@@ -196,15 +243,8 @@ export default function ServiceForm() {
                 <div className="space-y-6">
                     <div className="flex justify-between items-center">
                         <h2 className="text-lg font-semibold text-gray-700">
-                            Questions
+                            Questions Section
                         </h2>
-                        <button
-                            type="button"
-                            onClick={addQuestion}
-                            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-                        >
-                            Add Question
-                        </button>
                     </div>
 
                     {formData.questions.map((question, qIndex) => (
@@ -292,6 +332,13 @@ export default function ServiceForm() {
                             )}
                         </div>
                     ))}
+                    <button
+                        type="button"
+                        onClick={addQuestion}
+                        className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 float-right transition-colors"
+                    >
+                        Add Question
+                    </button>
                 </div>
 
                 <button

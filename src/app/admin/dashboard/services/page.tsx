@@ -130,8 +130,13 @@ const Page = () => {
                                                 </td>
                                                 <td className="py-2 px-4">
                                                     <Image
-                                                        src={service.image}
-                                                        alt={service.name}
+                                                        src={
+                                                            service?.image || ""
+                                                        }
+                                                        alt={
+                                                            service.name ||
+                                                            "Service image"
+                                                        }
                                                         height={64}
                                                         width={64}
                                                         className="w-16 h-16 object-cover rounded"
