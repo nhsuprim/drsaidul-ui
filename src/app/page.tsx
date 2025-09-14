@@ -10,7 +10,7 @@ export default function Home() {
             <Banner />
             <Services />
             <FQuestion />
-            <Testimonial />
+            {/* <Testimonial /> */}
         </div>
     );
 }

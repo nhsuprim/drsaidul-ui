@@ -89,10 +89,12 @@ const NavBar = () => {
                             /> */}
                             <Link
                                 href="/"
-                                className="text-2xl font-bold text-gray-800"
+                                className="text-2xl font-extrabold drop-shadow-lg transition-all duration-300 
+             bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-500 
+             hover:from-blue-700 hover:to-cyan-600"
                             >
                                 ডাঃ{" "}
-                                <span className="text-green-400">
+                                <span className="inline-block">
                                     সাইদুল ইসলাম
                                 </span>
                             </Link>
