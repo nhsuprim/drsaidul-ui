@@ -5,6 +5,7 @@ import NavBar from "./components/Header/NavBar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import dynamic from "next/dynamic";
+import Footer from "./components/Footer/Footer";
 
 // Dynamically import the Fbpixel component with SSR disabled
 // const Fbpixel = dynamic(import("../app/components/FaceBookPixel/Fbpixel"));
@@ -34,6 +35,7 @@ export default function RootLayout({
                 <Fbpixel />
                 {children}
                 <ToastContainer />
+                <Footer />
             </body>
         </html>
     );
