@@ -124,7 +124,7 @@ export default function ServiceForm() {
             if (response.data.success) {
                 toast.success("Service successfully created");
                 console.log("Service created:", response.data);
-                router.push("/dashboard/services");
+                router.push("/admin/dashboard/services");
                 setFormData({
                     name: "",
                     description: "",
