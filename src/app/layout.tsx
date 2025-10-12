@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import dynamic from "next/dynamic";
 import Footer from "./components/Footer/Footer";
+import WhatsApp from "./components/whatsApp/WhatsApp";
 
 // Dynamically import the Fbpixel component with SSR disabled
 // const Fbpixel = dynamic(import("../app/components/FaceBookPixel/Fbpixel"));
@@ -33,6 +34,7 @@ export default function RootLayout({
             <body className={inter.className}>
                 <NavBar></NavBar>
                 <Fbpixel />
+                <WhatsApp />
                 {children}
                 <ToastContainer />
                 <Footer />
